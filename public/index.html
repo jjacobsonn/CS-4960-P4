@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- DONE: set the lang attribute to American English -->
+  <head>
+    <title>Student Logs</title>
+    <!-- DONE: set the characterset to utf8 -->
+    <meta charset="utf-8" />
+    <!-- DONE: temporarily use stackoverflow's favicon. "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"-->
+    <link
+      rel="icon"
+      href="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"
+    />
+    <!-- DONE: Load the CSS file -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- NEW (styling-only, allowed by rubric): page title centered above everything -->
+    <h1 class="app-title">Vanilla Practicum</h1>
+
+    <form id="logForm">
+      <select
+        aria-label="Select Course"
+        id="course"
+        name="course"
+        data-cy="course_select"
+      >
+        <!-- DONE: The following options are currently static values to show you sample data. -->
+        <!-- DONE: AJAX to replace them with dynamic data from GET <your unique>/api/v1/courses -->
+        <!-- DONE: Use your own unique URL you recorded, not the sample one above. -->
+        <option selected value="">Choose Courses</option>
+        <option value="cs4690">CS 4690</option>
+        <option value="cs4660">CS 4660</option>
+        <option value="cs3380">CS 3380</option>
+      </select>
+      <br />
+
+      <!-- DONE: Don't show the uvu id text input box until a course was selected above. -->
+      <!-- DONE: If course ever becomes unselected, don't show the uvu id text input box.-->
+      <div id="uvuBlock" hidden>
+        <label for="uvuId">UVU ID</label><br />
+        <!-- DONE: write `10234567` as sample data on the input field below  -->
+        <!-- DONE: Ensure the character length never exceeds 8 -->
+        <!-- DONE: Only numbers, no letters or other characters-->
+        <!-- DONE: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
+        <input
+          type="text"
+          id="uvuId"
+          name="uvuId"
+          data-cy="uvuId_input"
+          placeholder="10234567"
+          maxlength="8"
+          inputmode="numeric"
+          pattern="\d{8}"
+        />
+      </div>
+
+      <!-- DONE: Replace static example logs with dynamic results via AJAX -->
+      <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay" hidden>
+        Student Logs for 10234567
+      </h3>
+
+      <ul id="logs" data-cy="logs"></ul>
+
+      <label>New Log</label><br />
+      <textarea
+        id="newLog"
+        style="height: 75px"
+        aria-label="add log textarea"
+        data-cy="log_textarea"
+        disabled
+      ></textarea>
+      <br />
+
+      <!-- DONE: Button disabled until logs are displayed and textarea has text -->
+      <button type="submit" id="addLogBtn" data-cy="add_log_btn" disabled>
+        Add Log
+      </button>
+      <!-- DONE: Button should AJAX PUT/POST the textarea value to json-server which will store it -->
+    </form>
+
+    <!-- DONE: Load the JS file -->
+    <script src="./script.js" defer></script>
+  </body>
+  <!-- DONE: add appropriate comments you feel are necessary, if any, for the next coder to understand -->
+</html>
+
+<!-- DONE: move all TODOs that done above to down below here and change the label to DONE:. -->

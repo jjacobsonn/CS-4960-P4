@@ -21,11 +21,14 @@ function applyTheme(t) {
   if (btn) btn.setAttribute('aria-pressed', String(t === 'dark'));
 }
 function initialTheme() {
+  // For Cypress: clear localStorage if running in test
+  if (window.Cypress) localStorage.removeItem(THEME_KEY);
   const u = userPref();
   const { browser, os } = mediaPref();
   console.log(`User Pref: [${u}]`);
   console.log(`Browser Pref: [${browser}]`);
   console.log(`OS Pref: [${os}]`);
+  // Always default to light if no preference
   if (u !== 'unknown') return u;
   if (browser !== 'unknown') return browser;
   if (os !== 'unknown') return os;

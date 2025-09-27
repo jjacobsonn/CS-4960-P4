@@ -75,15 +75,18 @@ function escapeHtml(s) {
 
 /**********************************************************
  * (2) COURSES — fetch on page load and populate the dropdown
- * Uses fetch() so we can use XMLHttpRequest for logs (rubric #6 variety).
+ * Uses Axios for AJAX as required by the rubric.
  **********************************************************/
 async function fetchCourses() {
   dbg(`[courses] GET ${BASE_URL}${COURSES_PATH}`);
-  const res = await fetch(`${BASE_URL}${COURSES_PATH}`, { cache: 'no-store' });
-  dbg(`[courses] status ${res.status}`);
-  if (!res.ok) throw new Error(`Failed to load courses: ${res.status}`);
-  // Expected shape from db.json: [{ id: "cs4660", display: "CS 4660" }, …]
-  return res.json();
+  try {
+    const res = await axios.get(`${BASE_URL}${COURSES_PATH}`, { headers: { 'Cache-Control': 'no-store' } });
+    dbg(`[courses] status ${res.status}`);
+    return res.data;
+  } catch (err) {
+    dbg(`[courses] error ${err?.response?.status || err.message}`);
+    throw new Error(`Failed to load courses: ${err?.response?.status || err.message}`);
+  }
 }
 
 /** Render <option> items; value = course.id, label = course.display. */
@@ -101,37 +104,25 @@ function renderCourses(courses) {
 }
 
 /**********************************************************
- * (6) LOGS — retrieve comments via vanilla XMLHttpRequest
- * We intentionally use XHR here (since courses used fetch) to satisfy the rubric.
+ * (6) LOGS — retrieve comments via Axios (all AJAX must use Axios)
  **********************************************************/
 function fetchLogsXHR(courseId, uvuId) {
-  return new Promise((resolve, reject) => {
+  // Now using Axios for all AJAX
+  return new Promise(async (resolve, reject) => {
     const url = logsUrl(courseId, uvuId);
-    dbg(`[logs] GET (xhr) ${url}`);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.setRequestHeader('Accept', 'application/json');
-
-    xhr.onload = () => {
-      dbg(`[logs] status ${xhr.status}`);
-      if (xhr.status === 200 || xhr.status === 304) {
-        try {
-          resolve(JSON.parse(xhr.responseText));
-        } catch {
-          reject(new Error('Invalid JSON'));
-        }
-      } else {
-        reject(new Error(`${xhr.status} ${xhr.statusText}`));
-      }
-    };
-
-    xhr.onerror = () => reject(new Error('Network error'));
-    xhr.send();
+    dbg(`[logs] GET (axios) ${url}`);
+    try {
+      const res = await axios.get(url, { headers: { 'Accept': 'application/json' } });
+      dbg(`[logs] status ${res.status}`);
+      resolve(res.data);
+    } catch (err) {
+      dbg(`[logs] error ${err?.response?.status || err.message}`);
+      reject(new Error(`${err?.response?.status || err.message}`));
+    }
   });
 }
 
-/** Render log list items. Each <li> shows date + collapsible <pre> text [rubric - scirpt.js (7)]. */
+/** Render log list items. Each <li> shows date + collapsible <pre> text [rubric - script.js (7)]. */
 function renderLogs(logs) {
   logsUl.innerHTML = '';
 
@@ -177,33 +168,41 @@ async function addLog(courseId, uvuId, text) {
 
   if (ADD_LOG_METHOD === 'POST') {
     dbg('[addLog] POST /logs');
-    const res = await fetch(`${BASE_URL}${LOGS_PATH}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ courseId, uvuId, text, comment: text, date: now }),
-    });
-    dbg(`[addLog] status ${res.status}`);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    return;
+    try {
+      const res = await axios.post(`${BASE_URL}${LOGS_PATH}`, {
+        courseId, uvuId, text, comment: text, date: now
+      }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      dbg(`[addLog] status ${res.status}`);
+      if (!(res.status >= 200 && res.status < 300)) throw new Error(`${res.status} ${res.statusText}`);
+      return;
+    } catch (err) {
+      dbg(`[addLog] error ${err?.response?.status || err.message}`);
+      throw new Error(`${err?.response?.status || err.message}`);
+    }
   }
 
   // PUT variant (json-server requires an id and /logs/:id). Use only if your grader insists on PUT.
   const id = `${courseId}-${uvuId}-${Date.now()}`;
   dbg(`[addLog] PUT /logs/${id}`);
-  const res = await fetch(`${BASE_URL}${LOGS_PATH}/${encodeURIComponent(id)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+  try {
+    const res = await axios.put(`${BASE_URL}${LOGS_PATH}/${encodeURIComponent(id)}`, {
       id,
       courseId,
       uvuId,
       text,
       comment: text,
       date: now,
-    }),
-  });
-  dbg(`[addLog] status ${res.status}`);
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    }, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+    dbg(`[addLog] status ${res.status}`);
+    if (!(res.status >= 200 && res.status < 300)) throw new Error(`${res.status} ${res.statusText}`);
+  } catch (err) {
+    dbg(`[addLog] error ${err?.response?.status || err.message}`);
+    throw new Error(`${err?.response?.status || err.message}`);
+  }
 }
 
 /**********************************************************
@@ -254,7 +253,7 @@ async function onUvuInput(e) {
   // If valid 8-digit ID, fetch logs; otherwise, keep UI disabled
   if (isEightDigits(currentUvuId)) {
     try {
-      const logs = await fetchLogsXHR(currentCourseId, currentUvuId); // (6) XHR path
+      const logs = await fetchLogsXHR(currentCourseId, currentUvuId); // (6) Axios path
       renderLogs(logs);
       setUvuHeader(currentUvuId);
       logsLoaded = true;

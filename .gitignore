@@ -70,13 +70,28 @@ db.json
 # Any zipped archives you create for submission
 *.zip
 
-# Test output
+
+# Cypress output and test artifacts
 cypress/videos/
 cypress/screenshots/
+cypress/results/
+cypress/reports/
+
+# Cypress cache and binary
+.cache/
+.cypress/
+
+# Test files (do not include in submission)
 *.test.js
 *.test.ts
 *.spec.js
 *.spec.ts
+
+# Node modules and lock files
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # Public build artifacts
 public/*.bak

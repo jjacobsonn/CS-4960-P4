@@ -1,3 +1,14 @@
+.btn-brand,
+.btn-brand:focus,
+.btn-brand:active,
+.btn-brand:focus-visible,
+.btn-brand:visited {
+  border: none !important;
+  box-shadow: none !important;
+}
+/* Reset */
+* { box-sizing: border-box; }
+
 /* Reset */
 * { box-sizing: border-box; }
 
@@ -15,20 +26,68 @@ body {
   row-gap: 16px;
 }
 
-/* Brand header */
+
+/* --- Restored and improved navbar styles --- */
 .navbar {
-  background: var(--brand);
-  color: var(--brand-contrast);
-  padding: .6rem .8rem;
   display: flex;
   align-items: center;
-  gap: .6rem;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  justify-content: flex-start;
+  gap: 1.2rem;
+  background: var(--bg);
   width: min(960px, 92vw);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  border-bottom: 4px solid var(--uvu-green);
+  padding: 1.1rem 2.2rem 0.7rem 2.2rem;
 }
-.logo { display:block; filter: brightness(0) invert(1) contrast(100%); } /* force white mark */
-.site-title { font-weight: 700; }
+.logo {
+  display: block;
+  background: var(--uvu-white);
+  border-radius: 6px;
+  padding: 2px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.uvu-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+}
+.uvu-institution {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--uvu-green);
+  text-transform: uppercase;
+}
+.uvu-product {
+  font-family: var(--font-head);
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-top: 0.1em;
+}
+.btn-brand {
+  margin-left: auto;
+  align-self: flex-start;
+  }
+  
+  /* UVU.edu-aligned outlined button style */
+  .btn-brand {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    color: var(--uvu-green);
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 0.6em 1.6em;
+    transition: background 0.15s, color 0.15s;
+    box-shadow: none;
+    cursor: pointer;
+  }
+}
 
 /* Title */
 .app-title {
@@ -68,20 +127,22 @@ textarea {
   width: 100%;
   padding: 10px 12px;
   margin: 6px 0 12px;
-  border: 2px solid var(--control-border);
+  border: 2px solid var(--uvu-green);
   border-radius: var(--radius);
   font: inherit;
   color: var(--text);
   background-color: var(--control-bg);
   caret-color: var(--text);
+  transition: border-color 0.15s;
 }
+
 input::placeholder, textarea::placeholder { color: var(--muted); }
 
-/* Focus ring */
-select:focus, input:focus, textarea:focus, button:focus {
-  outline: 3px solid transparent;
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 45%, white);
-  border-color: var(--brand);
+/* Focus ring: Only dark green border, no extra outline or box-shadow */
+select:focus, input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--uvu-green);
+  box-shadow: none;
 }
 
 /* Submit button */
@@ -96,9 +157,64 @@ button, .btn-brand {
   transition: background .12s ease, transform .02s ease, border-color .12s ease;
   cursor: pointer;
 }
+  
+  button {
+    font-weight: 700;
+    background: var(--brand);
+    color: var(--brand-contrast);
+    border: 2px solid var(--brand);
+    border-radius: var(--radius);
+    padding: .7rem 1.1rem;
+    font: inherit;
+    transition: background .12s ease, transform .02s ease, border-color .12s ease;
+    cursor: pointer;
+  }
+
+  /* Add Log button: borderless and centered */
+  #addLogBtn {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+    border: none !important;
+    box-shadow: none !important;
+    display: block;
+    margin: 18px auto 0 auto;
+    padding-left: 2.2em;
+    padding-right: 2.2em;
+  }
+  #addLogBtn:hover, #addLogBtn:focus, #addLogBtn:active {
+    background: var(--brand-hover);
+    color: var(--brand-contrast);
+    outline: none;
+    border: none !important;
+  }
+.btn-brand,
+button,
+.btn-brand:focus,
+.btn-brand:active,
+.btn-brand:focus-visible,
+.btn-brand:visited,
+button:focus,
+button:active,
+button:focus-visible,
+button:visited {
+  border: none !important;
+  box-shadow: none !important;
+}
 button:hover:enabled, .btn-brand:hover { background: var(--brand-hover); }
 button:active:enabled, .btn-brand:active { transform: translateY(1px); }
 button[disabled] { opacity: .6; cursor: not-allowed; }
+  
+  .btn-brand:hover, .btn-brand:focus, .btn-brand:active {
+    background: var(--uvu-green);
+    color: var(--uvu-white);
+    outline: none;
+    border: none;
+  }
+  
+  button:active:enabled, .btn-brand:active { transform: translateY(1px); }
+  button[disabled] { opacity: .6; cursor: not-allowed; }
 
 /* Logs */
 .logs-title { margin: 16px 0 8px; font-size: 1.25rem; }
@@ -108,17 +224,39 @@ button[disabled] { opacity: .6; cursor: not-allowed; }
 
 #logs > li {
   padding: 12px 14px;
-  border: 2px solid var(--card-border);     /* clearer borders on log items */
+  border: 2px solid var(--uvu-light-gray); /* official card border */
   border-radius: var(--radius);
   margin-bottom: 12px;
-  background: var(--surface);
+  background: var(--uvu-card-bg); /* official card background */
+  color: var(--uvu-black);
   transition: border-color .15s ease, box-shadow .15s ease;
+}
+html[data-theme="dark"] #logs > li {
+  background: color-mix(in srgb, var(--uvu-green) 18%, var(--uvu-seahaze) 82%);
+  border: 2px solid var(--uvu-silver);
+  color: var(--uvu-white);
+}
+html[data-theme="dark"] #logs > li {
+  background: rgba(39, 93, 56, 0.38); /* More visible in dark mode */
+  color: var(--text);
+}
+#logs > li, #logs > li pre, #logs > li span, #logs > li div {
+  font-size: 1rem !important;
+  font-family: var(--font-body) !important;
+  font-weight: 400;
+  line-height: 1.5;
 }
 #logs > li:hover {
   border-color: var(--brand);
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
-#logs small { color: var(--muted) !important; }
+#logs small, #logs time {
+  color: var(--muted) !important;
+  font-family: var(--font-head) !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: 1.01rem;
+}
 #logs pre {
   margin: 8px 0 0;
   white-space: pre-wrap;

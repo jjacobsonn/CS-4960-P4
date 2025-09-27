@@ -17,29 +17,32 @@
   </head>
 
   <body>
-    <!-- Brand header -->
+    <!-- UVU Brand Header (restored and improved) -->
     <header class="navbar" role="banner">
-      <!-- Direct UVU logo source with UVU-hosted fallback -->
       <img
         id="uvuLogo"
         class="logo"
         alt="Utah Valley University mark"
         src="https://www.uvu.edu/_common/images/uvu-mono.svg"
-        width="36" height="36"
+        width="44" height="44"
         onerror="this.src='https://www.uvu.edu/favicon.ico'"
+        style="background:var(--uvu-white);border-radius:6px;padding:2px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"
       />
-      <strong class="uvu-head site-title">Utah Valley University — Student Logs</strong>
-
+      <div class="uvu-header-text">
+        <span class="uvu-institution uvu-head" style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;letter-spacing:0.04em;color:var(--uvu-green);text-transform:uppercase;">Utah Valley University</span>
+        <span class="uvu-product uvu-head" style="font-family:var(--font-head);font-size:1.45rem;font-weight:800;color:var(--text);margin-top:0.1em;">Student Logs</span>
+      </div>
       <button id="themeToggle" class="btn-brand" type="button" aria-pressed="false">
         Toggle Light/Dark
       </button>
     </header>
 
     <!-- Page title -->
-    <h1 class="app-title uvu-head">Vanilla Practicum</h1>
+    <h1 class="app-title uvu-head">Axios UVU Brand - Practicum</h1>
 
     <!-- App form -->
     <form id="logForm">
+      <label for="course" class="uvu-head" style="font-size:1.1rem;font-weight:700;display:block;margin-bottom:2px;">Choose Course</label>
       <select aria-label="Select Course" id="course" name="course" data-cy="course_select">
         <option selected value="">Choose Courses</option>
         <option value="cs4690">CS 4690</option>
@@ -49,7 +52,7 @@
       <br />
 
       <div id="uvuBlock" hidden>
-        <label for="uvuId">UVU ID</label><br />
+  <label for="uvuId" class="uvu-head" style="font-size:1.1rem;font-weight:700;">UVU ID</label><br />
         <input
           type="text"
           id="uvuId"
@@ -64,13 +67,13 @@
         <small id="uvuIdHelp" class="sr-only">Enter an 8-digit UVU ID</small>
       </div>
 
-      <h3 id="uvuIdDisplay" class="logs-title uvu-head" data-cy="uvuIdDisplay" hidden>
+      <h3 id="uvuIdDisplay" class="logs-title uvu-head" data-cy="uvuIdDisplay" hidden style="color:var(--uvu-green);">
         Student Logs for 10234567
       </h3>
 
       <ul id="logs" data-cy="logs"></ul>
 
-      <label for="newLog">New Log</label><br />
+  <label for="newLog" class="uvu-head" style="font-size:1.1rem;font-weight:700;">New Log</label><br />
       <textarea id="newLog" style="height: 75px" aria-label="add log textarea" data-cy="log_textarea" disabled></textarea>
       <br />
 

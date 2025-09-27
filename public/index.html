@@ -1,32 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-  <!-- DONE: set the lang attribute to American English -->
+<html lang="en-US" data-theme="light">
   <head>
-    <title>Student Logs</title>
-    <!-- DONE: set the characterset to utf8 -->
     <meta charset="utf-8" />
-    <!-- DONE: temporarily use stackoverflow's favicon. "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"-->
-    <link
-      rel="icon"
-      href="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"
-    />
-    <!-- DONE: Load the CSS file -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Student Logs – Utah Valley University</title>
+
+    <!-- UVU favicon -->
+    <link rel="icon" href="https://www.uvu.edu/favicon.ico" />
+
+    <!-- UVU web font for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./brand.css" />
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body>
-    <!-- NEW (styling-only, allowed by rubric): page title centered above everything -->
-    <h1 class="app-title">Vanilla Practicum</h1>
 
+  <body>
+    <!-- UVU Brand Header (restored and improved) -->
+    <header class="navbar" role="banner">
+      <img
+        id="uvuLogo"
+        class="logo"
+        alt="Utah Valley University mark"
+        src="https://www.uvu.edu/_common/images/uvu-mono.svg"
+        width="44" height="44"
+        onerror="this.src='https://www.uvu.edu/favicon.ico'"
+        style="background:var(--uvu-white);border-radius:6px;padding:2px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"
+      />
+      <div class="uvu-header-text">
+        <span class="uvu-institution uvu-head" style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;letter-spacing:0.04em;color:var(--uvu-green);text-transform:uppercase;">Utah Valley University</span>
+        <span class="uvu-product uvu-head" style="font-family:var(--font-head);font-size:1.45rem;font-weight:800;color:var(--text);margin-top:0.1em;">Student Logs</span>
+      </div>
+      <button id="themeToggle" class="btn-brand" type="button" aria-pressed="false">
+        Toggle Light/Dark
+      </button>
+    </header>
+
+    <!-- Page title -->
+    <h1 class="app-title uvu-head">Axios UVU Brand - Practicum</h1>
+
+    <!-- App form -->
     <form id="logForm">
-      <select
-        aria-label="Select Course"
-        id="course"
-        name="course"
-        data-cy="course_select"
-      >
-        <!-- DONE: The following options are currently static values to show you sample data. -->
-        <!-- DONE: AJAX to replace them with dynamic data from GET <your unique>/api/v1/courses -->
-        <!-- DONE: Use your own unique URL you recorded, not the sample one above. -->
+      <label for="course" class="uvu-head" style="font-size:1.1rem;font-weight:700;display:block;margin-bottom:2px;">Choose Course</label>
+      <select aria-label="Select Course" id="course" name="course" data-cy="course_select">
         <option selected value="">Choose Courses</option>
         <option value="cs4690">CS 4690</option>
         <option value="cs4660">CS 4660</option>
@@ -34,14 +51,8 @@
       </select>
       <br />
 
-      <!-- DONE: Don't show the uvu id text input box until a course was selected above. -->
-      <!-- DONE: If course ever becomes unselected, don't show the uvu id text input box.-->
       <div id="uvuBlock" hidden>
-        <label for="uvuId">UVU ID</label><br />
-        <!-- DONE: write `10234567` as sample data on the input field below  -->
-        <!-- DONE: Ensure the character length never exceeds 8 -->
-        <!-- DONE: Only numbers, no letters or other characters-->
-        <!-- DONE: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
+  <label for="uvuId" class="uvu-head" style="font-size:1.1rem;font-weight:700;">UVU ID</label><br />
         <input
           type="text"
           id="uvuId"
@@ -51,37 +62,27 @@
           maxlength="8"
           inputmode="numeric"
           pattern="\d{8}"
+          aria-describedby="uvuIdHelp"
         />
+        <small id="uvuIdHelp" class="sr-only">Enter an 8-digit UVU ID</small>
       </div>
 
-      <!-- DONE: Replace static example logs with dynamic results via AJAX -->
-      <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay" hidden>
+      <h3 id="uvuIdDisplay" class="logs-title uvu-head" data-cy="uvuIdDisplay" hidden style="color:var(--uvu-green);">
         Student Logs for 10234567
       </h3>
 
       <ul id="logs" data-cy="logs"></ul>
 
-      <label>New Log</label><br />
-      <textarea
-        id="newLog"
-        style="height: 75px"
-        aria-label="add log textarea"
-        data-cy="log_textarea"
-        disabled
-      ></textarea>
+  <label for="newLog" class="uvu-head" style="font-size:1.1rem;font-weight:700;">New Log</label><br />
+      <textarea id="newLog" style="height: 75px" aria-label="add log textarea" data-cy="log_textarea" disabled></textarea>
       <br />
 
-      <!-- DONE: Button disabled until logs are displayed and textarea has text -->
-      <button type="submit" id="addLogBtn" data-cy="add_log_btn" disabled>
-        Add Log
-      </button>
-      <!-- DONE: Button should AJAX PUT/POST the textarea value to json-server which will store it -->
+      <button type="submit" id="addLogBtn" data-cy="add_log_btn" disabled>Add Log</button>
     </form>
 
-    <!-- DONE: Load the JS file -->
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./theme.js"></script>
     <script src="./script.js" defer></script>
   </body>
-  <!-- DONE: add appropriate comments you feel are necessary, if any, for the next coder to understand -->
 </html>
-
-<!-- DONE: move all TODOs that done above to down below here and change the label to DONE:. -->

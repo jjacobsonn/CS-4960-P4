@@ -1,52 +1,42 @@
-/**********************************************************
- * CONFIG — endpoints and feature flags
- **********************************************************/
-const BASE_URL = window.location.origin; // e.g., http://localhost:3000 or your webcontainer origin
-const COURSES_PATH = '/api/v1/courses'; // routes.json maps /api/v1/* -> /$1
-const LOGS_PATH = '/logs';
-const ADD_LOG_METHOD = 'POST'; // flip to "PUT" only if your grader explicitly requires PUT
+// === CONFIG: API endpoints and feature flags ===
+const BASE_URL = window.location.origin; // Site origin
+const COURSES_PATH = '/api/v1/courses'; // Course API path
+const LOGS_PATH = '/logs'; // Logs API path
+const ADD_LOG_METHOD = 'POST'; // Use PUT only if required
 
-/**********************************************************
- * DEV DEBUG — harmless no-op unless #debug exists (we removed it for submit)
- **********************************************************/
+// === DEBUG: No-op unless #debug exists ===
 const dbgBox = document.getElementById('debug');
 function dbg(msg) {
   if (dbgBox) dbgBox.textContent += `\n${msg}`;
 }
 
-/**********************************************************
- * ELEMENTS — references to important DOM nodes
- **********************************************************/
-let form; // <form id="logForm"> … wraps the UI
-let courseSelect; // <select id="course"> … course dropdown
-let uvuBlock; // <div id="uvuBlock"> … block that contains the UVU input; hidden until a course is chosen
-let uvuIdInput; // <input id="uvuId"> … 8-digit student ID
-let uvuIdDisplay; // <h3 id="uvuIdDisplay"> … “Student Logs for XYZ” header (shown after valid ID)
-let logsUl; // <ul id="logs"> … where fetched logs render
-let newLogTextarea; // <textarea id="newLog"> … composer for a new log entry
-let addLogBtn; // <button id="addLogBtn"> … submit new log (enabled only when valid)
+// === DOM ELEMENTS: Key UI nodes ===
+let form; // <form id="logForm">
+let courseSelect; // <select id="course">
+let uvuBlock; // <div id="uvuBlock">
+let uvuIdInput; // <input id="uvuId">
+let uvuIdDisplay; // <h3 id="uvuIdDisplay">
+let logsUl; // <ul id="logs">
+let newLogTextarea; // <textarea id="newLog">
+let addLogBtn; // <button id="addLogBtn">
 
-/**********************************************************
- * STATE — simple in-memory state for current selections
- **********************************************************/
-let currentCourseId = ''; // selected course (e.g., "cs4660")
-let currentUvuId = ''; // sanitized 8-digit UVU ID
-let logsLoaded = false; // true after we successfully load logs for current (course, uvuId)
+// === STATE: Current selections ===
+let currentCourseId = ''; // Selected course
+let currentUvuId = ''; // 8-digit UVU ID
+let logsLoaded = false; // Logs loaded for current selection
 
-/**********************************************************
- * HELPERS — tiny utilities used across handlers
- **********************************************************/
+// === HELPERS: Utility functions ===
 
-/** Returns true if s is exactly eight digits (rubric #4/#5). */
+/** Returns true if s is exactly eight digits. */
 const isEightDigits = (s) => /^\d{8}$/.test(s || '');
 
-/** Builds the /logs URL with query params for course + uvu (server filters). */
+/** Builds /logs URL with course and uvuId params. */
 const logsUrl = (courseId, uvuId) =>
   `${BASE_URL}${LOGS_PATH}?courseId=${encodeURIComponent(
     courseId
   )}&uvuId=${encodeURIComponent(uvuId)}`;
 
-/** Shows/Hides the H3 header and writes “Student Logs for <uvuId>”. */
+/** Updates the header to show current UVU ID. */
 function setUvuHeader(uvuId) {
   if (!uvuId) {
     uvuIdDisplay.hidden = true;
@@ -57,13 +47,13 @@ function setUvuHeader(uvuId) {
   }
 }
 
-/** Enables/disables the composer + button [rubric - script.js (8)]. */
+/** Enables/disables the log composer and button. */
 function setComposerEnabled(enabled) {
   newLogTextarea.disabled = !enabled;
   addLogBtn.disabled = !(enabled && newLogTextarea.value.trim().length > 0);
 }
 
-/** Escapes HTML to safely inject text into the DOM. */
+/** Escapes HTML for safe DOM injection. */
 function escapeHtml(s) {
   return String(s || '')
     .replaceAll('&', '&amp;')
@@ -73,10 +63,7 @@ function escapeHtml(s) {
     .replaceAll("'", '&#039;');
 }
 
-/**********************************************************
- * (2) COURSES — fetch on page load and populate the dropdown
- * Uses Axios for AJAX as required by the rubric.
- **********************************************************/
+// === COURSES: Fetch and render course list ===
 async function fetchCourses() {
   dbg(`[courses] GET ${BASE_URL}${COURSES_PATH}`);
   try {
@@ -89,7 +76,7 @@ async function fetchCourses() {
   }
 }
 
-/** Render <option> items; value = course.id, label = course.display. */
+/** Render <option> items for each course. */
 function renderCourses(courses) {
   dbg(
     `[courses] rendering ${Array.isArray(courses) ? courses.length : 0} courses`
@@ -103,9 +90,7 @@ function renderCourses(courses) {
   }
 }
 
-/**********************************************************
- * (6) LOGS — retrieve comments via Axios (all AJAX must use Axios)
- **********************************************************/
+// === LOGS: Fetch and render student logs ===
 function fetchLogsXHR(courseId, uvuId) {
   // Now using Axios for all AJAX
   return new Promise(async (resolve, reject) => {
@@ -122,7 +107,7 @@ function fetchLogsXHR(courseId, uvuId) {
   });
 }
 
-/** Render log list items. Each <li> shows date + collapsible <pre> text [rubric - script.js (7)]. */
+/** Render log list items with date and collapsible text. */
 function renderLogs(logs) {
   logsUl.innerHTML = '';
 
@@ -160,9 +145,7 @@ function renderLogs(logs) {
   }
 }
 
-/**********************************************************
- * (9) ADD LOG — POST (or PUT if required) then re-fetch to update UI
- **********************************************************/
+// === ADD LOG: Submit new log and refresh list ===
 async function addLog(courseId, uvuId, text) {
   const now = new Date().toLocaleString();
 
@@ -205,11 +188,9 @@ async function addLog(courseId, uvuId, text) {
   }
 }
 
-/**********************************************************
- * EVENT HANDLERS: (3), (4), (5), (8)
- **********************************************************/
+// === EVENT HANDLERS ===
 
-/** When a course is selected: show UVU block; when unselected: hide it. Also reset page state. */
+/** Handles course selection and resets state. */
 function onCourseSelected() {
   currentCourseId = courseSelect.value || '';
   dbg(`[event] course change -> "${currentCourseId}"`);
@@ -233,7 +214,7 @@ function onCourseSelected() {
   }
 }
 
-/** Sanitize UVU input and retrieve logs when it becomes valid. */
+/** Sanitize UVU input and fetch logs if valid. */
 async function onUvuInput(e) {
   // (4) Max 8 chars + (5) digits only
   const digits = (e.target.value || '').replace(/\D+/g, '').slice(0, 8);
@@ -275,13 +256,12 @@ async function onUvuInput(e) {
   }
 }
 
-/** Keep the Add button in sync with textarea content [rubric - script.js (8)] */
+/** Sync Add button with textarea content. */
 function onComposerInput() {
   setComposerEnabled(logsLoaded);
 }
 
-/** Submit handler: add the log via AJAX and immediately refresh the list [rubric - script.js (9)].
- */
+/** Submit handler: add log and refresh list. */
 async function onFormSubmit(e) {
   e.preventDefault();
   if (!logsLoaded) return;
@@ -303,9 +283,7 @@ async function onFormSubmit(e) {
   }
 }
 
-/**********************************************************
- * (1) BOOT — wire events and kick off initial fetches
- **********************************************************/
+// === BOOT: Initialize app and wire events ===
 function onPageLoad() {
   // Cache element references once
   form = document.getElementById('logForm');
@@ -335,5 +313,5 @@ function onPageLoad() {
     });
 }
 
-// Defer script ensures DOM is ready, but call explicitly [rubric - script.js (#1)].
+// Ensure DOM is ready before initializing.
 document.addEventListener('DOMContentLoaded', onPageLoad);

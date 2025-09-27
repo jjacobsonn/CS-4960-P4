@@ -1,4 +1,4 @@
-/* ---------------- Rustic Charm theme (white page, warm accents) ---------------- */
+/* ---------------- Rustic Charm theme (white page, warm accents): Project 1 Practicum ---------------- */
 :root {
   /* palette */
   --surface: #fffcf2; /* “paper” card background */

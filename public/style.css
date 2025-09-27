@@ -1,18 +1,8 @@
-.btn-brand,
-.btn-brand:focus,
-.btn-brand:active,
-.btn-brand:focus-visible,
-.btn-brand:visited {
-  border: none !important;
-  box-shadow: none !important;
-}
-/* Reset */
+
+/* === Reset & Base Styles === */
 * { box-sizing: border-box; }
 
-/* Reset */
-* { box-sizing: border-box; }
 
-/* Base */
 body {
   font: 16px/1.5 var(--font-body);
   color: var(--text);
@@ -27,7 +17,6 @@ body {
 }
 
 
-/* --- Restored and improved navbar styles --- */
 .navbar {
   display: flex;
   align-items: center;
@@ -70,26 +59,21 @@ body {
 .btn-brand {
   margin-left: auto;
   align-self: flex-start;
-  }
-  
-  /* UVU.edu-aligned outlined button style */
-  .btn-brand {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 1.1rem;
-    letter-spacing: 0.03em;
-    color: var(--uvu-green);
-    background: transparent;
-    border: none;
-    border-radius: 10px;
-    padding: 0.6em 1.6em;
-    transition: background 0.15s, color 0.15s;
-    box-shadow: none;
-    cursor: pointer;
-  }
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  color: var(--uvu-green);
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 0.6em 1.6em;
+  transition: background 0.15s, color 0.15s;
+  box-shadow: none;
+  cursor: pointer;
 }
 
-/* Title */
+/* === Title === */
 .app-title {
   text-align: center;
   color: var(--text);
@@ -107,20 +91,20 @@ body {
   border-radius: 999px;
 }
 
-/* Form card */
+/* === Form Card === */
 form {
   width: min(760px, 92vw);
   background: var(--card-bg);
-  border: 2px solid var(--card-border);   /* stronger border for visibility */
+  border: 2px solid var(--card-border); /* stronger border for visibility */
   border-radius: calc(var(--radius) + 4px);
   box-shadow: var(--shadow);
   padding: 20px;
 }
 
-/* Labels */
+/* === Labels === */
 label { font-weight: 600; color: var(--text); }
 
-/* Controls – readable in dark, clear borders */
+/* === Controls: Inputs, Selects, Textareas === */
 select,
 input[type='text'],
 textarea {
@@ -136,16 +120,19 @@ textarea {
   transition: border-color 0.15s;
 }
 
+
 input::placeholder, textarea::placeholder { color: var(--muted); }
 
-/* Focus ring: Only dark green border, no extra outline or box-shadow */
+
+/* Focus: Only dark green border, no extra outline or box-shadow */
 select:focus, input:focus, textarea:focus {
   outline: none;
   border-color: var(--uvu-green);
   box-shadow: none;
 }
 
-/* Submit button */
+
+/* === Buttons === */
 button, .btn-brand {
   font-weight: 700;
   background: var(--brand);
@@ -157,38 +144,38 @@ button, .btn-brand {
   transition: background .12s ease, transform .02s ease, border-color .12s ease;
   cursor: pointer;
 }
-  
-  button {
-    font-weight: 700;
-    background: var(--brand);
-    color: var(--brand-contrast);
-    border: 2px solid var(--brand);
-    border-radius: var(--radius);
-    padding: .7rem 1.1rem;
-    font: inherit;
-    transition: background .12s ease, transform .02s ease, border-color .12s ease;
-    cursor: pointer;
-  }
 
-  /* Add Log button: borderless and centered */
-  #addLogBtn {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 1.1rem;
-    letter-spacing: 0.03em;
-    border: none !important;
-    box-shadow: none !important;
-    display: block;
-    margin: 18px auto 0 auto;
-    padding-left: 2.2em;
-    padding-right: 2.2em;
-  }
-  #addLogBtn:hover, #addLogBtn:focus, #addLogBtn:active {
-    background: var(--brand-hover);
-    color: var(--brand-contrast);
-    outline: none;
-    border: none !important;
-  }
+button {
+  font-weight: 700;
+  background: var(--brand);
+  color: var(--brand-contrast);
+  border: 2px solid var(--brand);
+  border-radius: var(--radius);
+  padding: .7rem 1.1rem;
+  font: inherit;
+  transition: background .12s ease, transform .02s ease, border-color .12s ease;
+  cursor: pointer;
+}
+
+/* Add Log button: borderless and centered */
+#addLogBtn {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.03em;
+  border: none !important;
+  box-shadow: none !important;
+  display: block;
+  margin: 18px auto 0 auto;
+  padding-left: 2.2em;
+  padding-right: 2.2em;
+}
+#addLogBtn:hover, #addLogBtn:focus, #addLogBtn:active {
+  background: var(--brand-hover);
+  color: var(--brand-contrast);
+  outline: none;
+  border: none !important;
+}
 .btn-brand,
 button,
 .btn-brand:focus,
@@ -205,18 +192,19 @@ button:visited {
 button:hover:enabled, .btn-brand:hover { background: var(--brand-hover); }
 button:active:enabled, .btn-brand:active { transform: translateY(1px); }
 button[disabled] { opacity: .6; cursor: not-allowed; }
-  
-  .btn-brand:hover, .btn-brand:focus, .btn-brand:active {
-    background: var(--uvu-green);
-    color: var(--uvu-white);
-    outline: none;
-    border: none;
-  }
-  
-  button:active:enabled, .btn-brand:active { transform: translateY(1px); }
-  button[disabled] { opacity: .6; cursor: not-allowed; }
 
-/* Logs */
+.btn-brand:hover, .btn-brand:focus, .btn-brand:active {
+  background: var(--uvu-green);
+  color: var(--uvu-white);
+  outline: none;
+  border: none;
+}
+
+button:active:enabled, .btn-brand:active { transform: translateY(1px); }
+button[disabled] { opacity: .6; cursor: not-allowed; }
+
+
+/* === Logs === */
 .logs-title { margin: 16px 0 8px; font-size: 1.25rem; }
 
 #logs { list-style: none; padding: 0; margin: 8px 0 18px; }
@@ -224,10 +212,10 @@ button[disabled] { opacity: .6; cursor: not-allowed; }
 
 #logs > li {
   padding: 12px 14px;
-  border: 2px solid var(--uvu-light-gray); /* official card border */
+  border: 2px solid var(--uvu-light-gray); /* card border */
   border-radius: var(--radius);
   margin-bottom: 12px;
-  background: var(--uvu-card-bg); /* official card background */
+  background: var(--uvu-card-bg); /* card background */
   color: var(--uvu-black);
   transition: border-color .15s ease, box-shadow .15s ease;
 }
@@ -263,5 +251,6 @@ html[data-theme="dark"] #logs > li {
   font: 1rem/1.55 var(--font-body) !important;
 }
 
-/* Responsive */
+
+/* === Responsive === */
 @media (max-width: 520px) { form { padding: 14px; } }

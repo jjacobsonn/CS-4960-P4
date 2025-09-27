@@ -1,0 +1,69 @@
+/* UVU brand tokens */
+
+:root {
+  /* Core colors */
+  --uvu-green: #275d38;
+  --uvu-green-hover: #3f6f4e;
+  --uvu-silver: #8e8c89;
+  --uvu-white: #ffffff;
+  --uvu-black: #000000;
+
+  /* Typography */
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-head: "Rajdhani", Arial, Helvetica, sans-serif;
+
+  /* UI tokens */
+  --radius: 12px;
+  --gap: 8px;
+  --shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+/* Light theme */
+html[data-theme="light"] {
+  --bg: var(--uvu-white);
+  --surface: #f4f4f4;
+  --text: #111111;
+  --muted: #6f6f6f;
+
+  --brand: var(--uvu-green);
+  --brand-contrast: var(--uvu-white);
+  --brand-hover: var(--uvu-green-hover);
+
+  /* card + controls */
+  --card-bg: #fafafa;
+  --card-border: #d6d6d6;
+  --control-bg: #ffffff;
+  --control-border: #c8c8c8;
+}
+
+/* Dark theme */
+html[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --surface: #151515;
+  --text: #f2f2f2;
+  --muted: #bdbdbd;
+
+  --brand: var(--uvu-green);          /* same green both themes */
+  --brand-contrast: var(--uvu-white);
+  --brand-hover: var(--uvu-green-hover);
+
+  --card-bg: #171717;
+  --card-border: #3f3f3f;
+  --control-bg: #242424;
+  --control-border: #505050;
+}
+
+/* Utilities */
+.uvu-head { font-family: var(--font-head); }
+.uvu-body { font-family: var(--font-body); }
+.text-brand { color: var(--brand); }
+.bg-brand { background: var(--brand); color: var(--brand-contrast); }
+
+/* A11y helper */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}

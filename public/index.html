@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US" data-theme="light">
+<html lang="en-US" data-theme="light" data-bs-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -11,50 +11,57 @@
     <!-- UVU web font for headings -->
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="./brand.css" />
-    <link rel="stylesheet" href="./style.css" />
+  <!-- Bootstrap CSS from CDN with fallback -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+    crossorigin="anonymous"
+    onerror="this.onerror=null;this.href='./bootstrap.min.css';">
   </head>
 
-  <body>
+  <body class="bg-light">
     <!-- UVU Brand Header (restored and improved) -->
-    <header class="navbar" role="banner">
+  <header class="navbar navbar-expand-lg py-3 mb-4 border-bottom shadow-sm" role="banner">
+    <div class="container">
       <img
         id="uvuLogo"
-        class="logo"
+        class="me-3 bg-white rounded p-1 shadow-sm border"
         alt="Utah Valley University mark"
         src="https://www.uvu.edu/_common/images/uvu-mono.svg"
         width="44" height="44"
         onerror="this.src='https://www.uvu.edu/favicon.ico'"
-        style="background:var(--uvu-white);border-radius:6px;padding:2px;box-shadow:0 1px 4px rgba(0,0,0,0.04);"
       />
-      <div class="uvu-header-text">
-        <span class="uvu-institution uvu-head" style="font-family:var(--font-head);font-size:1.1rem;font-weight:700;letter-spacing:0.04em;color:var(--uvu-green);text-transform:uppercase;">Utah Valley University</span>
-        <span class="uvu-product uvu-head" style="font-family:var(--font-head);font-size:1.45rem;font-weight:800;color:var(--text);margin-top:0.1em;">Student Logs</span>
+      <div class="navbar-brand">
+        <span class="fw-bold text-success text-uppercase">Utah Valley University</span>
+        <span class="text-success mx-2">-</span>
+        <span class="fw-bold text-success text-uppercase">Student Logs</span>
       </div>
-      <button id="themeToggle" class="btn-brand" type="button" aria-pressed="false">
-        Toggle Light/Dark
+      <button id="themeToggle" class="btn btn-outline-success ms-auto rounded-pill" type="button" aria-pressed="false">
+        Switch to Dark Mode
       </button>
-    </header>
-
+    </div>
+  </header>
+  
+  <div class="container py-3">
     <!-- Page title -->
-    <h1 class="app-title uvu-head">Axios UVU Brand - Practicum</h1>
+    <h1 class="h2 mb-4 text-success fw-bold border-bottom pb-2 text-uppercase text-center">jQuery/Bootstrap UVU Brand - Practicum</h1>
 
     <!-- App form -->
-    <form id="logForm">
-      <label for="course" class="uvu-head" style="font-size:1.1rem;font-weight:700;display:block;margin-bottom:2px;">Choose Course</label>
-      <select aria-label="Select Course" id="course" name="course" data-cy="course_select">
-        <option selected value="">Choose Courses</option>
-        <option value="cs4690">CS 4690</option>
-        <option value="cs4660">CS 4660</option>
-        <option value="cs3380">CS 3380</option>
-      </select>
-      <br />
+    <form id="logForm" class="mb-4 p-4 bg-white rounded shadow-sm border border-success border-opacity-25">
+      <div class="mb-3">
+        <label for="course" class="form-label fw-bold">Choose Course</label>
+        <select class="form-select border-success border-opacity-50" aria-label="Select Course" id="course" name="course" data-cy="course_select">
+          <option selected value="">Choose Courses</option>
+          <option value="cs4690">CS 4690</option>
+          <option value="cs4660">CS 4660</option>
+          <option value="cs3380">CS 3380</option>
+        </select>
+      </div>
 
-      <div id="uvuBlock" hidden>
-  <label for="uvuId" class="uvu-head" style="font-size:1.1rem;font-weight:700;">UVU ID</label><br />
+      <div id="uvuBlock" class="mb-3" hidden>
+        <label for="uvuId" class="form-label fw-bold">UVU ID</label>
         <input
           type="text"
+          class="form-control border-success border-opacity-50"
           id="uvuId"
           name="uvuId"
           data-cy="uvuId_input"
@@ -64,25 +71,39 @@
           pattern="\d{8}"
           aria-describedby="uvuIdHelp"
         />
-        <small id="uvuIdHelp" class="sr-only">Enter an 8-digit UVU ID</small>
+        <div id="uvuIdHelp" class="form-text">Enter an 8-digit UVU ID</div>
       </div>
 
-      <h3 id="uvuIdDisplay" class="logs-title uvu-head" data-cy="uvuIdDisplay" hidden style="color:var(--uvu-green);">
+      <h3 id="uvuIdDisplay" class="h5 text-success" data-cy="uvuIdDisplay" hidden>
         Student Logs for 10234567
       </h3>
 
-      <ul id="logs" data-cy="logs"></ul>
+      <ul id="logs" class="list-group mb-3" data-cy="logs"></ul>
 
-  <label for="newLog" class="uvu-head" style="font-size:1.1rem;font-weight:700;">New Log</label><br />
-      <textarea id="newLog" style="height: 75px" aria-label="add log textarea" data-cy="log_textarea" disabled></textarea>
-      <br />
+      <div class="mb-3">
+        <label for="newLog" class="form-label fw-bold">New Log</label>
+        <textarea id="newLog" class="form-control border-success border-opacity-50 h-75" aria-label="add log textarea" data-cy="log_textarea" disabled></textarea>
+      </div>
 
-      <button type="submit" id="addLogBtn" data-cy="add_log_btn" disabled>Add Log</button>
+      <div class="text-center">
+        <button type="submit" id="addLogBtn" class="btn btn-success px-4" data-cy="add_log_btn" disabled>Add Log</button>
+      </div>
     </form>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./theme.js"></script>
-    <script src="./script.js" defer></script>
+  </div>
+  
+  <!-- jQuery from CDN with fallback -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" 
+    crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="./jquery-3.7.1.min.js"><\/script>')</script>
+    
+  <!-- Bootstrap Bundle JS from CDN with fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+    crossorigin="anonymous"></script>
+  <script>(typeof bootstrap === 'undefined') && document.write('<script src="./bootstrap.bundle.min.js"><\/script>')</script>
+    
+  <script src="./theme.js"></script>
+  <script src="./script.js"></script>
   </body>
 </html>

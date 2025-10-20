@@ -57,6 +57,54 @@
       "comment": "This is a test!",
       "date": "9/27/2025, 1:06:16 PM",
       "id": "_oEgXiC"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 9:12:08 PM",
+      "id": "iX062Vn"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 9:13:15 PM",
+      "id": "f0JA674"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 9:14:00 PM",
+      "id": "boo-twp"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 9:14:41 PM",
+      "id": "NVD7EeN"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 9:17:38 PM",
+      "id": "8qNpJLZ"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/4/2025, 10:58:15 PM",
+      "id": "noc_DEx"
     }
   ],
   "courses": [

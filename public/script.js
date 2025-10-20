@@ -5,20 +5,20 @@ const LOGS_PATH = '/logs'; // Logs API path
 const ADD_LOG_METHOD = 'POST'; // Use PUT only if required
 
 // === DEBUG: No-op unless #debug exists ===
-const dbgBox = document.getElementById('debug');
 function dbg(msg) {
-  if (dbgBox) dbgBox.textContent += `\n${msg}`;
+  const dbgBox = $('#debug');
+  if (dbgBox.length) dbgBox.text(dbgBox.text() + '\n' + msg);
 }
 
 // === DOM ELEMENTS: Key UI nodes ===
-let form; // <form id="logForm">
-let courseSelect; // <select id="course">
-let uvuBlock; // <div id="uvuBlock">
-let uvuIdInput; // <input id="uvuId">
-let uvuIdDisplay; // <h3 id="uvuIdDisplay">
-let logsUl; // <ul id="logs">
-let newLogTextarea; // <textarea id="newLog">
-let addLogBtn; // <button id="addLogBtn">
+let $form; // $('#logForm')
+let $courseSelect; // $('#course')
+let $uvuBlock; // $('#uvuBlock')
+let $uvuIdInput; // $('#uvuId')
+let $uvuIdDisplay; // $('#uvuIdDisplay')
+let $logsUl; // $('#logs')
+let $newLogTextarea; // $('#newLog')
+let $addLogBtn; // $('#addLogBtn')
 
 // === STATE: Current selections ===
 let currentCourseId = ''; // Selected course
@@ -39,18 +39,16 @@ const logsUrl = (courseId, uvuId) =>
 /** Updates the header to show current UVU ID. */
 function setUvuHeader(uvuId) {
   if (!uvuId) {
-    uvuIdDisplay.hidden = true;
-    uvuIdDisplay.textContent = 'Student Logs';
+    $uvuIdDisplay.prop('hidden', true).text('Student Logs');
   } else {
-    uvuIdDisplay.hidden = false;
-    uvuIdDisplay.textContent = `Student Logs for ${uvuId}`;
+    $uvuIdDisplay.prop('hidden', false).text(`Student Logs for ${uvuId}`);
   }
 }
 
 /** Enables/disables the log composer and button. */
 function setComposerEnabled(enabled) {
-  newLogTextarea.disabled = !enabled;
-  addLogBtn.disabled = !(enabled && newLogTextarea.value.trim().length > 0);
+  $newLogTextarea.prop('disabled', !enabled);
+  $addLogBtn.prop('disabled', !(enabled && $newLogTextarea.val().trim().length > 0));
 }
 
 /** Escapes HTML for safe DOM injection. */
@@ -64,192 +62,156 @@ function escapeHtml(s) {
 }
 
 // === COURSES: Fetch and render course list ===
-async function fetchCourses() {
+function fetchCourses() {
   dbg(`[courses] GET ${BASE_URL}${COURSES_PATH}`);
-  try {
-    const res = await axios.get(`${BASE_URL}${COURSES_PATH}`, { headers: { 'Cache-Control': 'no-store' } });
-    dbg(`[courses] status ${res.status}`);
-    return res.data;
-  } catch (err) {
-    dbg(`[courses] error ${err?.response?.status || err.message}`);
-    throw new Error(`Failed to load courses: ${err?.response?.status || err.message}`);
-  }
+  return $.ajax({
+    url: `${BASE_URL}${COURSES_PATH}`,
+    method: 'GET',
+    headers: { 'Cache-Control': 'no-store' },
+    dataType: 'json'
+  })
+    .done(function(data, textStatus, jqXHR) {
+      dbg(`[courses] status ${jqXHR.status}`);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      dbg(`[courses] error ${jqXHR.status || errorThrown}`);
+    });
 }
 
 /** Render <option> items for each course. */
 function renderCourses(courses) {
-  dbg(
-    `[courses] rendering ${Array.isArray(courses) ? courses.length : 0} courses`
-  );
-  courseSelect.innerHTML = '<option value="">Choose Courses</option>';
-  for (const c of courses) {
-    const opt = document.createElement('option');
-    opt.value = c.id; // "cs4660"
-    opt.textContent = c.display || c.id; // "CS 4660"
-    courseSelect.appendChild(opt);
-  }
+  dbg(`[courses] rendering ${Array.isArray(courses) ? courses.length : 0} courses`);
+  $courseSelect.html('<option value="">Choose Courses</option>');
+  $.each(courses, function(i, c) {
+    $('<option>', { value: c.id, text: c.display || c.id }).appendTo($courseSelect);
+  });
 }
 
 // === LOGS: Fetch and render student logs ===
 function fetchLogsXHR(courseId, uvuId) {
-  // Now using Axios for all AJAX
-  return new Promise(async (resolve, reject) => {
-    const url = logsUrl(courseId, uvuId);
-    dbg(`[logs] GET (axios) ${url}`);
-    try {
-      const res = await axios.get(url, { headers: { 'Accept': 'application/json' } });
-      dbg(`[logs] status ${res.status}`);
-      resolve(res.data);
-    } catch (err) {
-      dbg(`[logs] error ${err?.response?.status || err.message}`);
-      reject(new Error(`${err?.response?.status || err.message}`));
-    }
-  });
+  const url = logsUrl(courseId, uvuId);
+  dbg(`[logs] GET (jQuery) ${url}`);
+  return $.ajax({
+    url: url,
+    method: 'GET',
+    headers: { 'Accept': 'application/json' },
+    dataType: 'json'
+  })
+    .done(function(data, textStatus, jqXHR) {
+      dbg(`[logs] status ${jqXHR.status}`);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      dbg(`[logs] error ${jqXHR.status || errorThrown}`);
+    });
 }
 
 /** Render log list items with date and collapsible text. */
 function renderLogs(logs) {
-  logsUl.innerHTML = '';
-
+  $logsUl.empty();
   if (!Array.isArray(logs) || logs.length === 0) {
-    logsUl.innerHTML = `<li class="empty-hint">No logs yet for this student in this course.</li>`;
+    $logsUl.html('<li class="list-group-item border-success border-opacity-25"><i class="text-success">No logs yet for this student in this course.</i></li>');
     dbg('[logs] rendered 0');
     return;
   }
   dbg(`[logs] rendered ${logs.length}`);
-
-  for (const log of logs) {
-    const li = document.createElement('li');
-    li.style.cursor = 'pointer';
-
+  $.each(logs, function(i, log) {
+    const $li = $('<li>').addClass('list-group-item border-success border-opacity-25 mb-2').css('cursor', 'pointer');
     // Date (non-collapsible)
-    const dateDiv = document.createElement('div');
-    dateDiv.innerHTML = `<small>${escapeHtml(
-      log.date || log.createdAt || log.timestamp || ''
-    )}</small>`;
-
+    const $dateDiv = $('<div>').addClass('text-success fw-bold').html(`<small>${escapeHtml(log.date || log.createdAt || log.timestamp || '')}</small>`);
     // Body (collapsible)
-    const pre = document.createElement('pre');
-    const p = document.createElement('p');
-    p.textContent = log.text || log.comment || log.body || log.message || '';
-    pre.appendChild(p);
-
-    // Click anywhere on the item toggles ONLY the body text [rubric script.js (7)]
-    li.addEventListener('click', () => {
-      pre.hidden = !pre.hidden;
-    });
-
-    li.appendChild(dateDiv);
-    li.appendChild(pre);
-    logsUl.appendChild(li);
-  }
+    const $pre = $('<pre>').addClass('mt-2 mb-0 p-2 rounded bg-light bg-opacity-50');
+    const $p = $('<p>').addClass('mb-0').text(log.text || log.comment || log.body || log.message || '');
+    $pre.append($p);
+    // Click toggles body text
+    $li.on('click', function() { $pre.prop('hidden', !$pre.prop('hidden')); });
+    $li.append($dateDiv, $pre);
+    $logsUl.append($li);
+  });
 }
 
 // === ADD LOG: Submit new log and refresh list ===
-async function addLog(courseId, uvuId, text) {
+function addLog(courseId, uvuId, text) {
   const now = new Date().toLocaleString();
-
   if (ADD_LOG_METHOD === 'POST') {
     dbg('[addLog] POST /logs');
-    try {
-      const res = await axios.post(`${BASE_URL}${LOGS_PATH}`, {
-        courseId, uvuId, text, comment: text, date: now
-      }, {
-        headers: { 'Content-Type': 'application/json' }
+    return $.ajax({
+      url: `${BASE_URL}${LOGS_PATH}`,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ courseId, uvuId, text, comment: text, date: now })
+    })
+      .done(function(data, textStatus, jqXHR) {
+        dbg(`[addLog] status ${jqXHR.status}`);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        dbg(`[addLog] error ${jqXHR.status || errorThrown}`);
       });
-      dbg(`[addLog] status ${res.status}`);
-      if (!(res.status >= 200 && res.status < 300)) throw new Error(`${res.status} ${res.statusText}`);
-      return;
-    } catch (err) {
-      dbg(`[addLog] error ${err?.response?.status || err.message}`);
-      throw new Error(`${err?.response?.status || err.message}`);
-    }
   }
-
   // PUT variant (json-server requires an id and /logs/:id). Use only if your grader insists on PUT.
   const id = `${courseId}-${uvuId}-${Date.now()}`;
   dbg(`[addLog] PUT /logs/${id}`);
-  try {
-    const res = await axios.put(`${BASE_URL}${LOGS_PATH}/${encodeURIComponent(id)}`, {
-      id,
-      courseId,
-      uvuId,
-      text,
-      comment: text,
-      date: now,
-    }, {
-      headers: { 'Content-Type': 'application/json' }
+  return $.ajax({
+    url: `${BASE_URL}${LOGS_PATH}/${encodeURIComponent(id)}`,
+    method: 'PUT',
+    contentType: 'application/json',
+    data: JSON.stringify({ id, courseId, uvuId, text, comment: text, date: now })
+  })
+    .done(function(data, textStatus, jqXHR) {
+      dbg(`[addLog] status ${jqXHR.status}`);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      dbg(`[addLog] error ${jqXHR.status || errorThrown}`);
     });
-    dbg(`[addLog] status ${res.status}`);
-    if (!(res.status >= 200 && res.status < 300)) throw new Error(`${res.status} ${res.statusText}`);
-  } catch (err) {
-    dbg(`[addLog] error ${err?.response?.status || err.message}`);
-    throw new Error(`${err?.response?.status || err.message}`);
-  }
 }
 
 // === EVENT HANDLERS ===
 
 /** Handles course selection and resets state. */
 function onCourseSelected() {
-  currentCourseId = courseSelect.value || '';
+  currentCourseId = $courseSelect.val() || '';
   dbg(`[event] course change -> "${currentCourseId}"`);
-
-  // Reset view when course changes
-  logsUl.innerHTML = '';
+  $logsUl.empty();
   logsLoaded = false;
   setUvuHeader('');
   setComposerEnabled(false);
-
   if (currentCourseId) {
-    // Enable student ID entry [rubric - script.js (3)]
-    uvuBlock.hidden = false;
-    uvuBlock.removeAttribute('hidden');
-    uvuIdInput.value = '';
-    uvuIdInput.focus();
+    $uvuBlock.prop('hidden', false).removeAttr('hidden');
+    $uvuIdInput.val('').focus();
   } else {
-    // Disable student ID entry [rubric - script.js (3)]
-    uvuBlock.hidden = true;
-    uvuBlock.setAttribute('hidden', '');
+    $uvuBlock.prop('hidden', true).attr('hidden', '');
   }
 }
 
 /** Sanitize UVU input and fetch logs if valid. */
-async function onUvuInput(e) {
-  // (4) Max 8 chars + (5) digits only
-  const digits = (e.target.value || '').replace(/\D+/g, '').slice(0, 8);
-  if (digits !== e.target.value) e.target.value = digits;
+function onUvuInput(e) {
+  const digits = ($uvuIdInput.val() || '').replace(/\D+/g, '').slice(0, 8);
+  if (digits !== $uvuIdInput.val()) $uvuIdInput.val(digits);
   currentUvuId = digits;
   dbg(`[event] uvu input -> "${currentUvuId}"`);
-
-  // If no course, do nothing
   if (!currentCourseId) {
-    logsUl.innerHTML = '';
+    $logsUl.empty();
     logsLoaded = false;
     setUvuHeader('');
     setComposerEnabled(false);
     return;
   }
-
-  // If valid 8-digit ID, fetch logs; otherwise, keep UI disabled
   if (isEightDigits(currentUvuId)) {
-    try {
-      const logs = await fetchLogsXHR(currentCourseId, currentUvuId); // (6) Axios path
-      renderLogs(logs);
-      setUvuHeader(currentUvuId);
-      logsLoaded = true;
-      setComposerEnabled(true); // (8) enable Add when valid & loaded
-    } catch (err) {
-      logsUl.innerHTML = `<li><strong>Could not load logs</strong> — ${escapeHtml(
-        err.message
-      )}</li>`;
-      setUvuHeader(currentUvuId);
-      logsLoaded = false;
-      setComposerEnabled(false);
-      dbg(`[error] ${err.message}`);
-    }
+    fetchLogsXHR(currentCourseId, currentUvuId)
+      .then(function(logs) {
+        renderLogs(logs);
+        setUvuHeader(currentUvuId);
+        logsLoaded = true;
+        setComposerEnabled(true);
+      })
+      .catch(function(err) {
+        $logsUl.html(`<li><strong>Could not load logs</strong> — ${escapeHtml(err.message)}</li>`);
+        setUvuHeader(currentUvuId);
+        logsLoaded = false;
+        setComposerEnabled(false);
+        dbg(`[error] ${err.message}`);
+      });
   } else {
-    logsUl.innerHTML = '';
+    $logsUl.empty();
     setUvuHeader('');
     logsLoaded = false;
     setComposerEnabled(false);
@@ -262,56 +224,56 @@ function onComposerInput() {
 }
 
 /** Submit handler: add log and refresh list. */
-async function onFormSubmit(e) {
+function onFormSubmit(e) {
   e.preventDefault();
   if (!logsLoaded) return;
-
-  const text = newLogTextarea.value.trim();
+  const text = $newLogTextarea.val().trim();
   if (!text) return;
-
-  addLogBtn.disabled = true;
-  try {
-    await addLog(currentCourseId, currentUvuId, text);
-    const fresh = await fetchLogsXHR(currentCourseId, currentUvuId);
-    renderLogs(fresh);
-    newLogTextarea.value = '';
-    setComposerEnabled(true);
-  } catch (err) {
-    alert(`Save failed: ${err.message}`);
-    setComposerEnabled(true);
-    dbg(`[error] save failed: ${err.message}`);
-  }
+  $addLogBtn.prop('disabled', true);
+  addLog(currentCourseId, currentUvuId, text)
+    .then(function() {
+      return fetchLogsXHR(currentCourseId, currentUvuId);
+    })
+    .then(function(fresh) {
+      renderLogs(fresh);
+      $newLogTextarea.val('');
+      setComposerEnabled(true);
+    })
+    .catch(function(err) {
+      alert(`Save failed: ${err.message}`);
+      setComposerEnabled(true);
+      dbg(`[error] save failed: ${err.message}`);
+    });
 }
 
 // === BOOT: Initialize app and wire events ===
+
 function onPageLoad() {
-  // Cache element references once
-  form = document.getElementById('logForm');
-  courseSelect = document.getElementById('course');
-  uvuBlock = document.getElementById('uvuBlock');
-  uvuIdInput = document.getElementById('uvuId');
-  uvuIdDisplay = document.getElementById('uvuIdDisplay');
-  logsUl = document.getElementById('logs');
-  newLogTextarea = document.getElementById('newLog');
-  addLogBtn = document.getElementById('addLogBtn');
+  // Cache jQuery element references
+  $form = $('#logForm');
+  $courseSelect = $('#course');
+  $uvuBlock = $('#uvuBlock');
+  $uvuIdInput = $('#uvuId');
+  $uvuIdDisplay = $('#uvuIdDisplay');
+  $logsUl = $('#logs');
+  $newLogTextarea = $('#newLog');
+  $addLogBtn = $('#addLogBtn');
 
-  // Wire events [rubric - script.js (1) & (3)-(8)]
-  courseSelect.addEventListener('change', onCourseSelected);
-  courseSelect.addEventListener('input', onCourseSelected);
-  uvuIdInput.addEventListener('input', onUvuInput);
-  newLogTextarea.addEventListener('input', onComposerInput);
-  form.addEventListener('submit', onFormSubmit);
+  // Wire events
+  $courseSelect.on('change input', onCourseSelected);
+  $uvuIdInput.on('input', onUvuInput);
+  $newLogTextarea.on('input', onComposerInput);
+  $form.on('submit', onFormSubmit);
 
-  // Initial data load [rubric - script.js (2)]
+  // Initial data load
   fetchCourses()
     .then(renderCourses)
-    .then(() => dbg('[boot] courses loaded & rendered'))
-    .catch((e) => {
-      courseSelect.innerHTML =
-        '<option value="">(Could not load courses)</option>';
+    .then(function() { dbg('[boot] courses loaded & rendered'); })
+    .catch(function(e) {
+      $courseSelect.html('<option value="">(Could not load courses)</option>');
       dbg(`[error] failed to load courses: ${e.message}`);
     });
 }
 
 // Ensure DOM is ready before initializing.
-document.addEventListener('DOMContentLoaded', onPageLoad);
+$(onPageLoad);

@@ -1,57 +1,95 @@
-# Getting Started
+# Student Logs - UVU Brand Bootstrap/jQuery Practicum
 
-0. Hover on the icons above right to see the tooltips. Click the icon that says _Open Preview to the side_ to see this markdown rendered as it was intended to be viewed. Close this file (**readme.md**). The preview will remain open.
+This project implements a student log tracking system using Bootstrap and jQuery with UVU branding. Students can select courses, enter their UVU ID, view past logs, and add new log entries.
 
-1. Click _Fork_ icon above left.
+## Features
 
-2. Click _Share_ icon above left. Record your unique URL.
+- UVU Brand-compliant design using Bootstrap
+- Light/Dark theme toggle with preference saving
+- RESTful API integration using jQuery
+- Form validation and error handling
+- Mobile-responsive design
+- Complete test suite with Cypress
 
-3. Reload this browser tab with your unique URL. You'll have to repeat step #0.
+## Getting Started
 
-# Backend
+### Prerequisites
 
-4. In Terminal panel below, run `npm run server` to start the app server. You will see `index.html` in `public` rendered in a panel to the right.
+- Node.js (v14+)
+- npm
 
-## Backend Notes
+### Installation
 
-- You will use this backend for many future practicums.
+1. Clone the repository
+```bash
+git clone https://github.com/jjacobsonn/CS-4960-P4.git
+cd CS-4960-P4
+```
 
-- **json-server** is a spoofed server, not a robust backend. It's an easy and awesome prototyping tool to see if your client works without you first having to write your server.
+2. Install dependencies
+```bash
+npm install
+```
 
-- You will write a robust server in a future Practicum that replaces **json-server**.
+### Running the Application
 
-# Frontend
+1. Start the json-server backend
+```bash
+npm run server
+```
 
-5. Complete the _TODOs_ in **index.html**, **style.css**, and **script.js**.
+2. Open http://localhost:3000 in your browser
 
-6. Make sure you comply with the **Negative Requirements** below.
+### Running with Convenience Script
 
-7. Reset **db.json** back to its original contents (**db.bak.json**).
+You can also use the provided convenience script:
 
-8. Submit your Practicum Vanilla URL.
+```bash
+./runme.sh
+```
 
-9. Do your two peer reviews in class. Canvas will auto-assign them at the deadline.
+## Running Tests
 
-10. Rejoice like a Provo squirrel finding a Brazil nut.
+This project includes comprehensive Cypress tests for the functionality. To run the tests:
 
-## Negative Requirements
+1. Make sure the application is running (in a separate terminal)
+```bash
+npm run server
+```
 
-[ ] Don't use non-Chrome browser.
+2. Open Cypress Test Runner
+```bash
+npx cypress open
+```
 
-[ ] Don't change any html tag with a _data-cy_ attribute. You can add html tags.
+3. Select "E2E Testing" and choose your browser
+4. Run any of the test files:
+   - bootstrap_jquery.cy.js
+   - theme.cy.js
+   - form_validation.cy.js
+   - api_integration.cy.js
+   - user_interactions.cy.js
 
-[ ] No third party libraries.
+Alternatively, run all tests headlessly:
+```bash
+npx cypress run
+```
 
-[ ] Don't violate CRAP design principles.
+## Design Documentation
 
-[ ] Don't add images (other than favicon).
+The wireframes for this project can be found in the `documents/wireframe.pdf` file.
 
-[ ] Don't add files (other than favicon).
+## Project Structure
 
-[ ] No authentication (that'll come later).
+- `/public` - Frontend files (HTML, JS, CSS)
+- `/cypress` - Test files and configuration
+- `db.json` - Database file for json-server
+- `routes.json` - Route configuration for json-server
 
-[ ] No testing (that'll come later).
+## Technical Details
 
-[ ] Don't add a new course or a new student (they'll come later).
-
-[ ] No updating or deleting a past log. The log is an archive, i.e. an immutable record of history.
+- No "localhost" URLs in the codebase - all links are relative for portability
+- Uses jQuery for DOM manipulation and AJAX
+- Bootstrap 5 for responsive layout and styling
+- Light/dark theme toggle using localStorage for persistence
+- UVU branding color scheme and design elements

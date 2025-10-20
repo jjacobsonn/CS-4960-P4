@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "server": "json-server db.json --routes routes.json"
+    "server": "json-server db.json"
   },
   "devDependencies": {
     "cypress": "^14.5.4",

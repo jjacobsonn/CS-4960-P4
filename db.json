@@ -105,6 +105,174 @@
       "comment": "Test log from Cypress",
       "date": "10/4/2025, 10:58:15 PM",
       "id": "noc_DEx"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/20/2025, 10:48:02 AM",
+      "id": "dVNNiVn"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Cypress test log 1761106381653",
+      "comment": "Cypress test log 1761106381653",
+      "date": "10/21/2025, 10:13:02 PM",
+      "id": "jee5TX-"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Refresh test log 1761106383047",
+      "comment": "Refresh test log 1761106383047",
+      "date": "10/21/2025, 10:13:04 PM",
+      "id": "sP-FHWq"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/21/2025, 10:13:13 PM",
+      "id": "rbzrno0"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "55249481",
+      "text": "First log for a new student",
+      "comment": "First log for a new student",
+      "date": "10/21/2025, 10:13:22 PM",
+      "id": "wUdtlEo"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Chronological test log 1761106416165",
+      "comment": "Chronological test log 1761106416165",
+      "date": "10/21/2025, 10:13:36 PM",
+      "id": "fF1ishq"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log that should be cleared",
+      "comment": "Test log that should be cleared",
+      "date": "10/21/2025, 10:13:39 PM",
+      "id": "Fg5ZxQp"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Cypress test log 1761106534095",
+      "comment": "Cypress test log 1761106534095",
+      "date": "10/21/2025, 10:15:35 PM",
+      "id": "ogejyS6"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Refresh test log 1761106535348",
+      "comment": "Refresh test log 1761106535348",
+      "date": "10/21/2025, 10:15:36 PM",
+      "id": "DAxJC1B"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/21/2025, 10:15:42 PM",
+      "id": "4BEaHQz"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "82724973",
+      "text": "First log for a new student",
+      "comment": "First log for a new student",
+      "date": "10/21/2025, 10:15:50 PM",
+      "id": "VfQsuPK"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log to ensure we have content",
+      "comment": "Test log to ensure we have content",
+      "date": "10/21/2025, 10:15:59 PM",
+      "id": "2dY16__"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Chronological test log 1761106564531",
+      "comment": "Chronological test log 1761106564531",
+      "date": "10/21/2025, 10:16:05 PM",
+      "id": "OE8xYIw"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log that should be cleared",
+      "comment": "Test log that should be cleared",
+      "date": "10/21/2025, 10:16:06 PM",
+      "id": "xOUzffO"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Cypress test log 1761106747506",
+      "comment": "Cypress test log 1761106747506",
+      "date": "10/21/2025, 10:19:08 PM",
+      "id": "wVzj2-Q"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Refresh test log 1761106748706",
+      "comment": "Refresh test log 1761106748706",
+      "date": "10/21/2025, 10:19:09 PM",
+      "id": "mNnR9kz"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log from Cypress",
+      "comment": "Test log from Cypress",
+      "date": "10/21/2025, 10:19:15 PM",
+      "id": "jaW7NSg"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "14151793",
+      "text": "First log for a new student",
+      "comment": "First log for a new student",
+      "date": "10/21/2025, 10:19:23 PM",
+      "id": "mjCbDjQ"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log to ensure we have content",
+      "comment": "Test log to ensure we have content",
+      "date": "10/21/2025, 10:19:30 PM",
+      "id": "33hNP4W"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Chronological test log 1761106770952",
+      "comment": "Chronological test log 1761106770952",
+      "date": "10/21/2025, 10:19:31 PM",
+      "id": "rIEVVCQ"
+    },
+    {
+      "courseId": "cs4690",
+      "uvuId": "10234567",
+      "text": "Test log that should be cleared",
+      "comment": "Test log that should be cleared",
+      "date": "10/21/2025, 10:19:32 PM",
+      "id": "-3AHRVd"
     }
   ],
   "courses": [

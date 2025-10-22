@@ -25,9 +25,9 @@ describe('API Integration Tests', () => {
     cy.get('#course').select('cs4690');
     cy.get('#uvuId').type('10234567');
     
-    // Verify the API call was made with correct parameters
-    cy.wait('@getLogs').its('request.url').should('include', 'courseId=cs4690');
-    cy.wait('@getLogs').its('request.url').should('include', 'uvuId=10234567');
+    // Wait for just one API call with correct parameters
+    cy.wait('@getLogs').its('request.url').should('include', 'courseId=cs4690')
+      .and('include', 'uvuId=10234567');
     
     // Logs container should have content
     cy.get('#logs').children().should('exist');

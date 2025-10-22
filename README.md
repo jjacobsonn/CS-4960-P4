@@ -1,95 +1,87 @@
 # Student Logs - UVU Brand Bootstrap/jQuery Practicum
 
-This project implements a student log tracking system using Bootstrap and jQuery with UVU branding. Students can select courses, enter their UVU ID, view past logs, and add new log entries.
-
-## Features
-
-- UVU Brand-compliant design using Bootstrap
-- Light/Dark theme toggle with preference saving
-- RESTful API integration using jQuery
-- Form validation and error handling
-- Mobile-responsive design
-- Complete test suite with Cypress
+This project implements a student log tracking system using Bootstrap and jQuery with UVU branding. It includes light/dark theme toggling, RESTful API implementation, and Cypress tests.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14+)
+- Node.js 
 - npm
 
-### Installation
+### Installation and Running
 
-1. Clone the repository
+**Option 1: Using the convenience script (recommended)**
+
+The project includes convenience scripts that will install dependencies and start the server:
+
 ```bash
-git clone https://github.com/jjacobsonn/CS-4960-P4.git
-cd CS-4960-P4
+# On macOS/Linux:
+./runme.sh
+
+# On Windows:
+runme.bat
 ```
 
-2. Install dependencies
+**Option 2: Manual installation**
+
+1. Install dependencies:
 ```bash
 npm install
 ```
 
-### Running the Application
-
-1. Start the json-server backend
+2. Start the server:
 ```bash
 npm run server
 ```
 
-2. Open http://localhost:3000 in your browser
+3. Open http://localhost:3000 in your browser
 
-### Running with Convenience Script
+## Running Cypress Tests
 
-You can also use the provided convenience script:
+This project includes Cypress tests for extra credit. To run these tests:
 
+### Step 1: Start the server
+First, start the server using the convenience script:
 ```bash
+# On macOS/Linux:
 ./runme.sh
+
+# On Windows:
+runme.bat
 ```
 
-## Running Tests
-
-This project includes comprehensive Cypress tests for the functionality. To run the tests:
-
-1. Make sure the application is running (in a separate terminal)
+### Step 2: Run Cypress tests (in a new terminal)
 ```bash
-npm run server
+# Run all tests
+npx cypress run
+
+# Run specific test files
+npx cypress run --spec "cypress/e2e/theme.cy.js"
+npx cypress run --spec "cypress/e2e/bootstrap_jquery.cy.js"
 ```
 
-2. Open Cypress Test Runner
+### Alternative: Open Cypress UI
+If you prefer to use the Cypress UI:
 ```bash
 npx cypress open
 ```
 
-3. Select "E2E Testing" and choose your browser
-4. Run any of the test files:
-   - bootstrap_jquery.cy.js
-   - theme.cy.js
-   - form_validation.cy.js
-   - api_integration.cy.js
-   - user_interactions.cy.js
-
-Alternatively, run all tests headlessly:
-```bash
-npx cypress run
-```
-
-## Design Documentation
-
-The wireframes for this project can be found in the `documents/wireframe.pdf` file.
+The test files are located in `cypress/e2e/` folder:
+- `theme.cy.js`: Tests the light/dark theme toggle functionality (2 tests)
+- `bootstrap_jquery.cy.js`: Tests Bootstrap styling and jQuery functionality (8 tests)
 
 ## Project Structure
 
 - `/public` - Frontend files (HTML, JS, CSS)
-- `/cypress` - Test files and configuration
+- `/cypress` - Test files
+- `/documents` - Contains wireframe.pdf
 - `db.json` - Database file for json-server
-- `routes.json` - Route configuration for json-server
 
-## Technical Details
+## Key Features
 
-- No "localhost" URLs in the codebase - all links are relative for portability
-- Uses jQuery for DOM manipulation and AJAX
-- Bootstrap 5 for responsive layout and styling
-- Light/dark theme toggle using localStorage for persistence
-- UVU branding color scheme and design elements
+- UVU Brand-compliant design using Bootstrap
+- Light/Dark theme toggle with preference saving
+- RESTful API with relative URLs (no hardcoded localhost)
+- Form validation for UVU ID
+- Responsive design
